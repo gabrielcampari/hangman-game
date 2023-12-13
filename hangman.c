@@ -10,15 +10,29 @@ sprintf(palavrasecreta, "MELANCIA"); //s - de string , strigprintf, "%s" represe
 int acertou = 0; 
 int enforcou = 0; 
 
+char possibilidades[26];
+int tentativas = 0; 
+
 do {
-    char chute;  //inicio do jogo 
-    scanf("%c", &chute);
+//inicio do jogo 
+
 
     for(int i=0; i < strlen(palavrasecreta); i++){ //strlen - usado para medir o tamanho de um array
-        if(palavrasecreta[i] == chute){
-            printf("\nA posicao %d tem essa letra!", i); 
+        for(int j=0; j < tentativas; j++){
+            if(possibilidades[j] == palavrasecreta[i]){
+                printf("%c ");
+                break;
+            }
         }
+        printf("_ ");
     } 
+    printf("\n");
 
-} while(!acertou && !enforcou);
+    char chute; 
+    scanf("%c", &chute);
+
+    possibilidades[tentativas] = chute; 
+    tentativas++;
+
+    } while(!acertou && !enforcou);
 }
