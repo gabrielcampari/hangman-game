@@ -1,6 +1,12 @@
 #include <stdio.h>
 #include <string.h>
 #include <locale.h>
+#include "functions.h"
+
+//VARIAVEIS GLOBAIS
+char palavrasecreta [20]; 
+char possibilidades[26];
+int tentou = 0;
 
 void cabecalho() { //Criando a funcao cabecalho usando void 
     printf("\n***************************************");
@@ -10,60 +16,97 @@ void cabecalho() { //Criando a funcao cabecalho usando void
     printf("\n");  
 }
 
-void chuta(char possibilidades[26], int * tentativas){
+void chuta(){
     char chute; 
-    scanf("%c", &chute);
+    printf("Qual letra deseja tentar? \n");
+    scanf(" %c", &chute);
 
-    possibilidades[(*tentativas)] = chute; 
-    (*tentativas)++; //tentativas deve se direcionar ao valor da variavel definida fora desta função assim ao inves de apenas ao endereço
+    possibilidades[tentou] = chute; 
+    tentou++; 
 }
 
-void palavraescolhida(char palavrasecreta[20]){
+void palavraescolhida(){
     sprintf(palavrasecreta, "MELANCIA"); //s - de string , strigprintf, "%s" representa o sprintf o \0 atalho para 0 que serve para indicar que uma string acaba - igual o sprintf faz 
 }
 
-int main() { //Função principal
-    setlocale(LC_ALL, "Portuguese");
+int chuteDado(char letra){ 
 
-    //VARIAVEIS - Nao definida como global para nao alterar as mesmas
-    char palavrasecreta [20]; 
+    int achou = 0; 
 
-    int acertou = 0; 
-    int enforcou = 0; 
+        for(int j = 0; j < tentou; j++){
 
-    char possibilidades[26];
-    int tentativas = 0; 
-
-    palavraescolhida(palavrasecreta);//chamada da função
-    cabecalho(); //chamando a funcao, caso nao insira a funcao nao sera executada
-
-    do {
-    //inicio do jogo 
-
-
-        for(int i=0; i < strlen(palavrasecreta); i++){ //strlen - usado para medir o tamanho de um array
-
-            int letracorreta = 0; //variavel para encontrar a letra correta e verificar se equivale
-
-
-            for(int j=0; j < tentativas; j++){
-
-                if(possibilidades[j] == palavrasecreta[i]){
-
-                    letracorreta = 1; 
-                    break;
-                }
+            if(possibilidades[j] == letra) {
+                achou = 1; 
+                break; 
             }
+        }
+
+        return achou; 
+}
+
+void forca(){
+    
+    //printf("Você já deu %d chutes! \n", tentativas); 
+
+        for(int i = 0; i < strlen(palavrasecreta); i++){ //strlen - usado para medir o tamanho de um array
+
+            int letracorreta = 0; 
             
-            if(letracorreta) {
-                printf("%c", palavrasecreta[i]);
+            if(chuteDado(palavrasecreta[i])) {
+                printf("%c ", palavrasecreta[i]);
             } else {
                 printf("_ ");
             }
+
         } 
         printf("\n");
+}
 
-        chuta(possibilidades, &tentativas); //Variavel tentativas usa o & para direcionar ao endereco de memoria
+int acertou(){
+    for(int i = 0; i < strlen(palavrasecreta); i++){
+        if(!chuteDado(palavrasecreta[i])){
+            return 0; 
+        }
+    }
 
-        } while(!acertou && !enforcou);
+    return 1; 
+
+}
+
+int enforcou(){
+
+    int erros = 0; 
+
+    for(int i = 0; i < tentou; i++){
+
+        int existe = 0; 
+
+        for(int j = 0; j < strlen(palavrasecreta); j++){
+
+            if(possibilidades[i] == palavrasecreta[j]){
+
+                    existe = 1; 
+                    break;
+                }
+        }
+
+        if(!existe) erros++; 
+    }
+
+    return erros >= 5;
+}
+
+int main() { //Função principal
+    setlocale(LC_ALL, "Portuguese"); 
+
+    palavraescolhida();//chamada da função
+    cabecalho(); //chamando a funcao, caso nao insira a funcao nao sera executada
+
+    do {
+    //inicio e loop do jogo 
+
+        forca(); 
+        chuta(); 
+
+        } while(!acertou() && !enforcou());
 }
