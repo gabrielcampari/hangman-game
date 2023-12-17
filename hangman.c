@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
+#include <stdlib.h>
 #include <locale.h>
 #include "functions.h"
 
@@ -26,7 +28,25 @@ void chuta(){
 }
 
 void palavraescolhida(){
-    sprintf(palavrasecreta, "MELANCIA"); //s - de string , strigprintf, "%s" representa o sprintf o \0 atalho para 0 que serve para indicar que uma string acaba - igual o sprintf faz 
+
+    FILE * f; 
+    f = fopen("words.txt", "r"); //Funcao de abrir arquivos
+    if(f == NULL){
+        printf("Desculpe mas o banco de dados está indisponível!\n\n"); 
+        exit(1);
+    }
+
+
+    int quantidaDePalavras; 
+    fscanf(f, "%d", &quantidaDePalavras);
+    srand(time(NULL));
+    int random = rand() % quantidaDePalavras; 
+
+    for(int i = 0; i <= random; i++){
+        fscanf(f, "%s", palavrasecreta); //Depois de buscar um numero no inicio ele guia para ler as strings do txt assim indo em ordem
+    }
+
+    fclose(f); //Fechar o arquivo para reservar para essa funcao (evita que outras usem esse arquivo e ate o altere)
 }
 
 int chuteDado(char letra){ 

@@ -5,3 +5,4 @@ int chuteDado(char letra);
 void forca();
 int acertou();
 int enforcou();
+void palavraescolhida(); 
