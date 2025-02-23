@@ -27,5 +27,5 @@ Play the Hangman game and enhance your understanding of C programming concepts.
 
 In the code, at lines 30 and 74, there is a link to the file that needs to be adjusted based on your system's path. Replace the following: 
 ```
-f = fopen("C:/Users/USER/OneDrive/Documentos/Arquivos de programas/C/Alura/hangman-game/words.txt", "r+");
+f = fopen("C:/examplePath/hangman-game/words.txt", "r+");
 ```
